@@ -11,6 +11,7 @@ const StudentList = () => {
       .get("http://localhost:8080/api/students")
       .then((response) => {
         setStudents(response.data);
+        console.log(response.data);
       })
       .catch((error) => {
         console.error("Error fetching students:", error);
@@ -21,16 +22,18 @@ const StudentList = () => {
     <Container maxWidth="sm">
       <Paper elevation={3}>
         <Scrollbars style={{ height: 400 }}>
-          {" "}
-          {/* Adjust the height here */}
           <List sx={{ padding: 0 }}>
-            {students.length > 0 ? (
+            {students !== null || students.length > 0 ? (
               students.map((student) => (
                 <ListItem key={student.id}>
                   <Paper elevation={0} sx={{ width: "100%", p: 2 }}>
                     <ListItemText
-                      primary={`${student.firstName} ${student.lastName}`}
-                      secondary={`Email: ${student.email}, Phone: ${student.phoneNumber}`}
+                      primary={`${student.firstName || ""} ${
+                        student.lastName || ""
+                      }`}
+                      secondary={`Email: ${student.email || ""}, Phone: ${
+                        student.phoneNumber || ""
+                      }`}
                     />
                   </Paper>
                 </ListItem>

@@ -70,7 +70,12 @@ const Form = ({ setSubmitted }) => {
     <Container maxWidth="md">
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
-          <Typography variant="h4" align="center" gutterBottom>
+          <Typography
+            variant="h4"
+            align="center"
+            gutterBottom
+            style={{ color: "whitesmoke" }}
+          >
             Student Registration Form
           </Typography>
           <Paper
@@ -167,7 +172,12 @@ const Form = ({ setSubmitted }) => {
           </Paper>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Typography variant="h4" align="center" gutterBottom>
+          <Typography
+            variant="h4"
+            align="center"
+            gutterBottom
+            style={{ color: "whitesmoke" }}
+          >
             Registered Students
           </Typography>
           <StudentList />
