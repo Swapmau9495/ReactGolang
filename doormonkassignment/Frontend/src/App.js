@@ -1,7 +1,6 @@
 import React from "react";
 import Form from "./components/Form";
 import SuccessMessage from "./components/SuccessMessage";
-
 function App() {
   const [submitted, setSubmitted] = React.useState(false);
 

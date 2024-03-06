@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import {
-  Typography,
-  List,
-  ListItem,
-  ListItemText,
-  Container,
-} from "@mui/material";
+import { List, ListItem, ListItemText, Container, Paper } from "@mui/material";
+import { Scrollbars } from "react-custom-scrollbars";
 
 const StudentList = () => {
   const [students, setStudents] = useState([]);
@@ -23,26 +18,31 @@ const StudentList = () => {
   }, []);
 
   return (
-    <Container maxWidth="md">
-      <Typography variant="h4" align="center" gutterBottom>
-        Student List
-      </Typography>
-      <List>
-        {students.length > 0 ? (
-          students.map((student) => (
-            <ListItem key={student.id}>
-              <ListItemText
-                primary={`${student.firstName} ${student.lastName}`}
-                secondary={`Email: ${student.email}, Phone: ${student.phoneNumber}`}
-              />
-            </ListItem>
-          ))
-        ) : (
-          <ListItem>
-            <ListItemText primary="No students found" />
-          </ListItem>
-        )}
-      </List>
+    <Container maxWidth="sm">
+      <Paper elevation={3}>
+        <Scrollbars style={{ height: 400 }}>
+          {" "}
+          {/* Adjust the height here */}
+          <List sx={{ padding: 0 }}>
+            {students.length > 0 ? (
+              students.map((student) => (
+                <ListItem key={student.id}>
+                  <Paper elevation={0} sx={{ width: "100%", p: 2 }}>
+                    <ListItemText
+                      primary={`${student.firstName} ${student.lastName}`}
+                      secondary={`Email: ${student.email}, Phone: ${student.phoneNumber}, Institution :${student.institutionName}`}
+                    />
+                  </Paper>
+                </ListItem>
+              ))
+            ) : (
+              <ListItem>
+                <ListItemText primary="No student Registered yet" />
+              </ListItem>
+            )}
+          </List>
+        </Scrollbars>
+      </Paper>
     </Container>
   );
 };
@@ -51,6 +51,13 @@ export default StudentList;
 
 // import React, { useEffect, useState } from "react";
 // import axios from "axios";
+// import {
+//   Typography,
+//   List,
+//   ListItem,
+//   ListItemText,
+//   Container,
+// } from "@mui/material";
 
 // const StudentList = () => {
 //   const [students, setStudents] = useState([]);
@@ -67,24 +74,27 @@ export default StudentList;
 //   }, []);
 
 //   return (
-//     <div>
-//       <h2>Student List</h2>
-//       {students !== null &&
-//       students !== undefined &&
-//       Array.isArray(students) &&
-//       students.length > 0 ? (
-//         <ul>
-//           {students.map((student) => (
-//             <li key={student.id}>
-//               {student.firstName} {student.lastName} - {student.email}{" "}
-//               {student.phoneNumber}
-//             </li>
-//           ))}
-//         </ul>
-//       ) : (
-//         ""
-//       )}
-//     </div>
+//     <Container maxWidth="md">
+//       <Typography variant="h4" align="center" gutterBottom>
+//         Student List
+//       </Typography>
+//       <List>
+//         {students.length > 0 ? (
+//           students.map((student) => (
+//             <ListItem key={student.id}>
+//               <ListItemText
+//                 primary={`${student.firstName} ${student.lastName}`}
+//                 secondary={`Email: ${student.email}, Phone: ${student.phoneNumber}`}
+//               />
+//             </ListItem>
+//           ))
+//         ) : (
+//           <ListItem>
+//             <ListItemText primary="No students found" />
+//           </ListItem>
+//         )}
+//       </List>
+//     </Container>
 //   );
 // };
 
