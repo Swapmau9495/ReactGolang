@@ -23,7 +23,7 @@ const StudentList = () => {
       <Paper elevation={3}>
         <Scrollbars style={{ height: 400 }}>
           <List sx={{ padding: 0 }}>
-            {students !== null || students.length > 0 ? (
+            {students && students.length > 0 ? (
               students.map((student) => (
                 <ListItem key={student.id}>
                   <Paper elevation={0} sx={{ width: "100%", p: 2 }}>
@@ -33,6 +33,8 @@ const StudentList = () => {
                       }`}
                       secondary={`Email: ${student.email || ""}, Phone: ${
                         student.phoneNumber || ""
+                      },Institue:${student.institutionName}, Year:${
+                        student.passOutYear
                       }`}
                     />
                   </Paper>

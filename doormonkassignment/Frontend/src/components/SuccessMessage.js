@@ -1,9 +1,10 @@
-import React from 'react';
+import React from "react";
 
 const SuccessMessage = () => {
   return (
-    <div>
+    <div style={{ color: "whitesmoke" }}>
       <h2>Form submitted successfully!</h2>
+      <h4>Thank you for Registration!</h4>
     </div>
   );
 };

@@ -26,8 +26,8 @@ const schema = yup.object().shape({
     .string()
     .required()
     .matches(/^\d{10}$/, "Invalid phone number"),
-  // institutionName: yup.string().required().max(50),
-  // passOutYear: yup.number().required("Pass-out Year is required"),
+  institutionName: yup.string().required().max(50),
+  passOutYear: yup.number().required("Invalid Year").min(2010).max(2023),
   // cgpiScore: yup.number().required("CGPI/Score is required"),
 });
 
@@ -126,7 +126,7 @@ const Form = ({ setSubmitted }) => {
                   helperText={errors.phoneNumber?.message}
                   margin="normal"
                 />
-                {/* <Typography
+                <Typography
                   variant="h6"
                   sx={{ fontFamily: "Arial, sans-serif", fontWeight: "bold" }}
                 >
@@ -148,12 +148,16 @@ const Form = ({ setSubmitted }) => {
                   error={!!errors.passOutYear}
                   helperText={
                     errors.passOutYear
-                      ? "Pass-out Year is required"
+                      ? "Invalid Passout Year"
                       : errors.passOutYear?.message
                   }
+                  inputProps={{
+                    min: 2010,
+                    max: 2023,
+                  }}
                   margin="normal"
                 />
-                <TextField
+                {/* <TextField
                   {...register("cgpiScore")}
                   label="CGPI/Score"
                   fullWidth
