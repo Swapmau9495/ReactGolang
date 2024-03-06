@@ -26,9 +26,9 @@ const schema = yup.object().shape({
     .string()
     .required()
     .matches(/^\d{10}$/, "Invalid phone number"),
-  institutionName: yup.string().required().max(50),
-  passOutYear: yup.number().required("Pass-out Year is required"),
-  cgpiScore: yup.number().required("CGPI/Score is required"),
+  // institutionName: yup.string().required().max(50),
+  // passOutYear: yup.number().required("Pass-out Year is required"),
+  // cgpiScore: yup.number().required("CGPI/Score is required"),
 });
 
 const Form = ({ setSubmitted }) => {
@@ -121,7 +121,7 @@ const Form = ({ setSubmitted }) => {
                   helperText={errors.phoneNumber?.message}
                   margin="normal"
                 />
-                <Typography
+                {/* <Typography
                   variant="h6"
                   sx={{ fontFamily: "Arial, sans-serif", fontWeight: "bold" }}
                 >
@@ -156,7 +156,7 @@ const Form = ({ setSubmitted }) => {
                   error={!!errors.cgpiScore}
                   helperText={errors.cgpiScore?.message}
                   margin="normal"
-                />
+                /> */}
                 <Box mt={2}>
                   <Button variant="contained" type="submit">
                     Submit

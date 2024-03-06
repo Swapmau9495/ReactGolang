@@ -30,7 +30,7 @@ const StudentList = () => {
                   <Paper elevation={0} sx={{ width: "100%", p: 2 }}>
                     <ListItemText
                       primary={`${student.firstName} ${student.lastName}`}
-                      secondary={`Email: ${student.email}, Phone: ${student.phoneNumber}, Institution :${student.institutionName}`}
+                      secondary={`Email: ${student.email}, Phone: ${student.phoneNumber}`}
                     />
                   </Paper>
                 </ListItem>

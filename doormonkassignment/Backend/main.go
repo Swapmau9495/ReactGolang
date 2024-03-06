@@ -28,8 +28,7 @@ func main() {
             first_name TEXT,
             last_name TEXT,
             email TEXT,
-            phone_number TEXT,
-			institutionName TEXT
+            phone_number TEXT
         );
     `)
     if err != nil {
@@ -60,7 +59,7 @@ type Student struct {
 	LastName    string `json:"lastName" db:"last_name"`
 	Email       string `json:"email" db:"email"`
 	PhoneNumber string `json:"phoneNumber" db:"phone_number"`
-	InstitutionName string `json:"institutionName" db:"institution_Name"`
+	// InstitutionName string `json:"institutionName" db:"institution_Name"`
 }
 
 
@@ -73,7 +72,7 @@ func createStudent(c *gin.Context) {
 	
 
 	_, err := db.Exec("INSERT INTO students (first_name, last_name, email, phone_number) VALUES (?, ?, ?, ?)",
-		student.FirstName, student.LastName, student.Email, student.PhoneNumber, student.InstitutionName)
+		student.FirstName, student.LastName, student.Email, student.PhoneNumber)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
