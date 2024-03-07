@@ -1,4 +1,4 @@
-export const jest = {
+module.exports = {
   transform: {
     "^.+\\.jsx?$": "babel-jest",
   },
