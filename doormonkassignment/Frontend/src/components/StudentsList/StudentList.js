@@ -36,7 +36,7 @@ const StudentList = () => {
         Registered Students
       </Typography>
       <Paper elevation={3}>
-        <Scrollbars style={{ height: 400 }}>
+        <Scrollbars style={{ height: 483 }}>
           <List sx={{ padding: 0 }}>
             {students && students.length > 0 ? (
               students.map((student) => (

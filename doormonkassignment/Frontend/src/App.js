@@ -1,6 +1,6 @@
 import React from "react";
-import Form from "./components/Form";
-import SuccessMessage from "./components/SuccessMessage/SuccessMessage";
+import Form from "./components/Form.js";
+import SuccessMessage from "./components/SuccessMessage/SuccessMessage.js";
 function App() {
   //hook for submission state
   const [submitted, setSubmitted] = React.useState(false);

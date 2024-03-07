@@ -11,10 +11,10 @@ import {
   Grid,
   Paper,
 } from "@mui/material";
-import StudentList from "./StudentsList/StudentList";
+import StudentList from "./StudentsList/StudentList.js";
 import { Scrollbars } from "react-custom-scrollbars";
-import schema from "./Validation/ValidationSchema";
-import { postData } from "./PostAPI/Api";
+import schema from "./Validation/ValidationSchema.js";
+import { postData } from "./PostAPI/Api.js";
 
 const Form = ({ setSubmitted, setIsError }) => {
   //UseForm hook is used for handling form functionalities including validation
@@ -61,7 +61,7 @@ const Form = ({ setSubmitted, setIsError }) => {
               border: "1px solid #e0e0e0", // Add border style here
             }}
           >
-            <Scrollbars style={{ height: 350 }}>
+            <Scrollbars style={{ height: 450 }}>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <Typography
                   variant="h6"
