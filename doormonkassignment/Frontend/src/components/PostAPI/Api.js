@@ -1,5 +1,5 @@
 import axios from "axios";
-
+// POST Api to Post data to server when user click on Submit
 export async function postData(student) {
   try {
     const response = await axios.post(

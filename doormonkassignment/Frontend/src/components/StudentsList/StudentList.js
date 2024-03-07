@@ -12,7 +12,7 @@ import { Scrollbars } from "react-custom-scrollbars";
 
 const StudentList = () => {
   const [students, setStudents] = useState([]);
-
+  // GET api to retrive and Display Studentlist
   useEffect(() => {
     axios
       .get("http://localhost:8080/api/students")

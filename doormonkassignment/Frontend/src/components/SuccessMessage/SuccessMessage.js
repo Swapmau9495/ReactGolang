@@ -1,6 +1,7 @@
 import React from "react";
 
 const SuccessMessage = ({ isError }) => {
+  //isError checking if API thorwing error by any reason Message will be displayed accordingly
   return isError ? (
     <div style={{ color: "whitesmoke" }}>
       <h2>Registration Failed</h2>

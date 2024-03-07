@@ -17,6 +17,7 @@ import schema from "./Validation/ValidationSchema";
 import { postData } from "./PostAPI/Api";
 
 const Form = ({ setSubmitted, setIsError }) => {
+  //UseForm hook is used for handling form functionalities including validation
   const {
     register,
     handleSubmit,
@@ -25,6 +26,7 @@ const Form = ({ setSubmitted, setIsError }) => {
     resolver: yupResolver(schema),
   });
 
+  //onSubmit function will run when user click on submit button
   const onSubmit = (data) => {
     console.log(data);
     setSubmitted(true);
