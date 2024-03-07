@@ -29,7 +29,8 @@ func main() {
             email TEXT,
             phone_number TEXT,
             institution_name TEXT,
-            passOutYear INTEGER
+            passOutYear INTEGER,
+            cgpi_score FLOAT
         );
     `)
 	if err != nil {
@@ -61,6 +62,7 @@ type Student struct {
 	PhoneNumber    string `json:"phoneNumber" db:"phone_number"`
 	InstitutionName string `json:"institutionName" db:"institution_name"`
 	PassOutYear           int    `json:"passOutYear" db:"passOutYear"`
+	CgpiScore       float64 `json:"cgpiScore" db:"cgpi_score"`
 }
 
 func createStudent(c *gin.Context) {
@@ -70,8 +72,8 @@ func createStudent(c *gin.Context) {
 		return
 	}
 
-	_, err := db.Exec("INSERT INTO students (first_name, last_name, email, phone_number, institution_name, passOutYear) VALUES (?, ?, ?, ?, ?, ?)",
-		student.FirstName, student.LastName, student.Email, student.PhoneNumber, student.InstitutionName, student.PassOutYear)
+	_, err := db.Exec("INSERT INTO students (first_name, last_name, email, phone_number, institution_name, passOutYear, cgpi_score) VALUES (?, ?, ?, ?, ?, ?, ?)",
+		student.FirstName, student.LastName, student.Email, student.PhoneNumber, student.InstitutionName, student.PassOutYear, student.CgpiScore)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

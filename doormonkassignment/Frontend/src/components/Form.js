@@ -1,8 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import axios from "axios";
+
 import {
   TextField,
   Button,
@@ -12,26 +11,12 @@ import {
   Grid,
   Paper,
 } from "@mui/material";
-import StudentList from "./StudentList";
+import StudentList from "./StudentsList/StudentList";
 import { Scrollbars } from "react-custom-scrollbars";
+import schema from "./Validation/ValidationSchema";
+import { postData } from "./PostAPI/Api";
 
-const schema = yup.object().shape({
-  firstName: yup.string().required().max(20),
-  lastName: yup.string().required().max(20),
-  email: yup
-    .string()
-    .required("Email is required")
-    .email("Invalid email format"),
-  phoneNumber: yup
-    .string()
-    .required()
-    .matches(/^\d{10}$/, "Invalid phone number"),
-  institutionName: yup.string().required().max(50),
-  passOutYear: yup.number().required("Invalid Year").min(2010).max(2023),
-  // cgpiScore: yup.number().required("CGPI/Score is required"),
-});
-
-const Form = ({ setSubmitted }) => {
+const Form = ({ setSubmitted, setIsError }) => {
   const {
     register,
     handleSubmit,
@@ -40,29 +25,17 @@ const Form = ({ setSubmitted }) => {
     resolver: yupResolver(schema),
   });
 
-  async function postData(student) {
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/api/students",
-        student
-      );
-      return response.data;
-    } catch (error) {
-      console.error("Error posting data:", error);
-      throw error;
-    }
-  }
-
   const onSubmit = (data) => {
     console.log(data);
     setSubmitted(true);
     postData(data)
       .then((responseData) => {
-        console.log("Data posted successfully:", responseData);
         // Handle successful response
+        console.log("Data posted successfully:", responseData);
       })
       .catch((error) => {
-        // Handle error
+        // Handle error with setError
+        setIsError(true);
       });
   };
 
@@ -157,15 +130,15 @@ const Form = ({ setSubmitted }) => {
                   }}
                   margin="normal"
                 />
-                {/* <TextField
+                <TextField
                   {...register("cgpiScore")}
                   label="CGPI/Score"
                   fullWidth
-                  type="number"
+                  type="text"
                   error={!!errors.cgpiScore}
                   helperText={errors.cgpiScore?.message}
                   margin="normal"
-                /> */}
+                />
                 <Box mt={2}>
                   <Button variant="contained" type="submit">
                     Submit
@@ -176,14 +149,6 @@ const Form = ({ setSubmitted }) => {
           </Paper>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Typography
-            variant="h4"
-            align="center"
-            gutterBottom
-            style={{ color: "whitesmoke" }}
-          >
-            Registered Students
-          </Typography>
           <StudentList />
         </Grid>
       </Grid>
@@ -192,74 +157,3 @@ const Form = ({ setSubmitted }) => {
 };
 
 export default Form;
-
-// import React from "react";
-// import { useForm } from "react-hook-form";
-// import { yupResolver } from "@hookform/resolvers/yup";
-// import * as yup from "yup";
-// import axios from "axios";
-// import StudentList from "./StudentList";
-
-// const schema = yup.object().shape({
-//   firstName: yup.string().required().max(20),
-//   lastName: yup.string().required().max(20),
-//   email: yup.string().required().email(),
-//   phoneNumber: yup
-//     .string()
-//     .required()
-//     .matches(/^\d{10}$/, "Invalid phone number"),
-// });
-
-// const Form = ({ setSubmitted }) => {
-//   const {
-//     register,
-//     handleSubmit,
-//     formState: { errors },
-//   } = useForm({
-//     resolver: yupResolver(schema),
-//   });
-
-//   async function postData(student) {
-//     try {
-//       const response = await axios.post(
-//         "http://localhost:8080/api/students",
-//         student
-//       );
-//       return response.data;
-//     } catch (error) {
-//       console.error("Error posting data:", error);
-//       throw error; // Re-throw the error to handle it in the calling code
-//     }
-//   }
-//   const onSubmit = (data) => {
-//     console.log(data);
-//     setSubmitted(true);
-//     postData(data)
-//       .then((responseData) => {
-//         console.log("Data posted successfully:", responseData);
-//         // Handle successful response
-//       })
-//       .catch((error) => {
-//         // Handle error
-//       });
-//   };
-
-//   return (
-//     <>
-//       <form onSubmit={handleSubmit(onSubmit)}>
-//         <input {...register("firstName")} placeholder="First Name" />
-//         {errors.firstName && <p>{errors.firstName.message}</p>}
-//         <input {...register("lastName")} placeholder="Last Name" />
-//         {errors.lastName && <p>{errors.lastName.message}</p>}
-//         <input {...register("email")} placeholder="Email" />
-//         {errors.email && <p>{errors.email.message}</p>}
-//         <input {...register("phoneNumber")} placeholder="Phone Number" />
-//         {errors.phoneNumber && <p>{errors.phoneNumber.message}</p>}
-//         <button type="submit">Submit</button>
-//       </form>
-//       <StudentList />
-//     </>
-//   );
-// };
-
-// export default Form;
