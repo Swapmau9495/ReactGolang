@@ -1,7 +1,5 @@
-module.exports = {
-  jest: {
-    transform: {
-      "^.+\\.jsx?$": "babel-jest",
-    },
+export const jest = {
+  transform: {
+    "^.+\\.jsx?$": "babel-jest",
   },
 };
