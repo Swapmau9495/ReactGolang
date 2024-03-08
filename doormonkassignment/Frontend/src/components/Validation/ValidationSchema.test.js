@@ -1,48 +1,101 @@
 import * as yup from "yup";
-import schema from "./ValidationSchema.js";
+import schema from "./schema";
 
-describe("Form Validation Schema", () => {
-  it("Validates correct input data", async () => {
+describe("Validation schema", () => {
+  it("validates input data with valid values", async () => {
     const validData = {
-      firstName: "Sanjay",
+      firstName: "sanjay",
       lastName: "Doshi",
-      email: "john.doe@example.com",
+      email: "doshisanjay.com",
       phoneNumber: "1234567890",
-      institutionName: "ABC University",
-      passOutYear: 2022,
-      cgpiScore: 8.5,
+      educationalBackground: [
+        {
+          institutionName: "a1 University",
+          passOutYear: 2020,
+          cgpiScore: 8.5,
+        },
+        {
+          institutionName: "y2 College",
+          passOutYear: 2018,
+          cgpiScore: 9.0,
+        },
+      ],
     };
 
-    // Validate the data against the schema
-    const isValid = await schema.isValid(validData);
-    expect(isValid).toBeTruthy();
+    await expect(schema.validate(validData)).resolves.toBe(validData);
   });
 
-  it("Returns errors for invalid input data", async () => {
+  it("throws validation error for missing required fields", async () => {
+    const invalidData = {};
+
+    await expect(
+      schema.validate(invalidData)
+    ).rejects.toThrowErrorMatchingSnapshot();
+  });
+
+  it("throws validation error for invalid email format", async () => {
     const invalidData = {
-      firstName: "", // Empty first name
+      firstName: "sanjay",
       lastName: "Doshi",
-      email: "invalid-email", // Invalid email format
-      phoneNumber: "123", // Invalid phone number
-      institutionName: "abc University",
-      passOutYear: 2025, // Invalid year
-      cgpiScore: "A", // Invalid CGPI score format
+      email: "doshisanjay.com",
+      phoneNumber: "1234567890",
+      educationalBackground: [],
     };
 
-    try {
-      // Attempt to validate the invalid data against the schema
-      await schema.validate(invalidData, { abortEarly: false });
-    } catch (error) {
-      console.log(error);
-      // Expecting errors
-      expect(error.errors).toHaveLength(7); // Number of expected errors
-      expect(error.errors).toContain("First Name is required");
-      expect(error.errors).toContain("Email is required");
-      expect(error.errors).toContain("Invalid email format");
-      expect(error.errors).toContain("Invalid phone number");
-      expect(error.errors).toContain("Invalid Year");
-      expect(error.errors).toContain("CGPI/Score must be a number");
-      expect(error.errors).toContain("CGPI/Score is required");
-    }
+    await expect(
+      schema.validate(invalidData)
+    ).rejects.toThrowErrorMatchingSnapshot();
+  });
+
+  it("throws validation error for invalid phone number format", async () => {
+    const invalidData = {
+      firstName: "sanjay",
+      lastName: "Doshi",
+      email: "doshisanjay.com",
+      phoneNumber: "123",
+      educationalBackground: [],
+    };
+
+    await expect(
+      schema.validate(invalidData)
+    ).rejects.toThrowErrorMatchingSnapshot();
+  });
+
+  it("throws validation error for invalid pass-out year", async () => {
+    const invalidData = {
+      firstName: "John",
+      lastName: "Doe",
+      email: "doshisanjay@example.com",
+      educationalBackground: [
+        {
+          institutionName: "A1 University",
+          passOutYear: 2025,
+          cgpiScore: 9.5,
+        },
+      ],
+    };
+
+    await expect(
+      schema.validate(invalidData)
+    ).rejects.toThrowErrorMatchingSnapshot();
+  });
+
+  it("throws validation error for invalid CGPI/score", async () => {
+    const invalidData = {
+      firstName: "John",
+      lastName: "Doe",
+      email: "doshisanjay@example.com",
+      educationalBackground: [
+        {
+          institutionName: "A1 University",
+          passOutYear: 2022,
+          cgpiScore: 11,
+        },
+      ],
+    };
+
+    await expect(
+      schema.validate(invalidData)
+    ).rejects.toThrowErrorMatchingSnapshot();
   });
 });

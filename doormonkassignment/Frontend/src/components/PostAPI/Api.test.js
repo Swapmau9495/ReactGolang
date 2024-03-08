@@ -1,61 +1,63 @@
 import axios from "axios";
-import { postData } from "./postData";
-
-jest.mock("axios");
+import MockAdapter from "axios-mock-adapter";
+import { postData } from "./api";
 
 describe("postData function", () => {
-  it("Posts data successfully", async () => {
-    // Mock the axios post method to return a successful response
-    axios.post.mockResolvedValueOnce({
-      data: { message: "Data posted successfully" },
-    });
+  let mockAxios;
 
-    // Define sample student data
-    const studentData = {
-      firstName: "sanjay",
-      lastName: "Doshi",
-      email: "doshisanju@egmail.com",
-      phoneNumber: "1234567890",
-      institutionName: "abc University",
-      passOutYear: 2022,
-      cgpiScore: 8.5,
-    };
-
-    // Call the postData function
-    const response = await postData(studentData);
-
-    // Check if the axios post method was called with the correct arguments
-    expect(axios.post).toHaveBeenCalledWith(
-      "http://localhost:8080/api/students",
-      studentData
-    );
-
-    // Check if the function returns the expected response
-    expect(response).toEqual({ message: "Data posted successfully" });
+  beforeEach(() => {
+    mockAxios = new MockAdapter(axios);
   });
 
-  it("Throws an error when posting data fails", async () => {
-    // Mock the axios post method to throw an error
-    axios.post.mockRejectedValueOnce(new Error("Failed to post data"));
+  afterEach(() => {
+    mockAxios.restore();
+  });
 
-    // Define sample student data
-    const studentData = {
-      firstName: "John",
-      lastName: "Doe",
-      email: "john.doe@example.com",
+  it("should post student data to server", async () => {
+    const student = {
+      firstName: "sanjay",
+      lastName: "Doshi",
+      email: "doshisanjay.com",
       phoneNumber: "1234567890",
-      institutionName: "Example University",
-      passOutYear: 2022,
-      cgpiScore: 8.5,
+      educationalBackground: [
+        {
+          institutionName: "a1 University",
+          passOutYear: 2020,
+          cgpiScore: 8.5,
+        },
+        {
+          institutionName: "y2 College",
+          passOutYear: 2018,
+          cgpiScore: 9.0,
+        },
+      ],
     };
 
-    // Call the postData function and expect it to throw an error
-    await expect(postData(studentData)).rejects.toThrow("Failed to post data");
+    const expectedData = {
+      success: true,
+      message: "Data posted successfully",
+    };
 
-    // Check if the axios post method was called with the correct arguments
-    expect(axios.post).toHaveBeenCalledWith(
-      "http://localhost:8080/api/students",
-      studentData
-    );
+    mockAxios
+      .onPost("http://localhost:8080/api/students")
+      .reply(200, expectedData);
+
+    const result = await postData(student);
+
+    expect(result).toEqual(expectedData);
+  });
+
+  it("should handle error when posting data fails", async () => {
+    const student = {
+      // Student data
+    };
+
+    const errorMessage = "Request failed with status code 404";
+
+    mockAxios.onPost("http://localhost:8080/api/students").reply(404, {
+      error: errorMessage,
+    });
+
+    await expect(postData(student)).rejects.toThrow(errorMessage);
   });
 });

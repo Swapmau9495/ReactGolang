@@ -1,42 +1,74 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
-import axios from "axios";
-import StudentList from "./StudentList.js";
-
-jest.mock("axios");
+import { render, screen, waitFor } from "@testing-library/react";
+import axiosMock from "axios";
+import StudentList from "./StudentList";
 
 describe("StudentList component", () => {
-  test("renders student list correctly", async () => {
-    const mockStudents = [
+  it("renders the list of students", async () => {
+    const students = [
       {
         id: 1,
-        firstName: "John",
-        lastName: "Doe",
-        email: "john.doe@example.com",
+        firstName: "sanjay",
+        lastName: "Doshi",
+        email: "doshisanjay.com",
         phoneNumber: "1234567890",
-        institutionName: "ABC University",
-        passOutYear: 2022,
-        cgpiScore: 8.5,
+        educationalBackground: [
+          {
+            institutionName: "a1 University",
+            passOutYear: 2020,
+            cgpiScore: 8.5,
+          },
+          {
+            institutionName: "y2 College",
+            passOutYear: 2018,
+            cgpiScore: 9.0,
+          },
+        ],
       },
     ];
 
-    axios.get.mockResolvedValueOnce({ data: mockStudents });
+    axiosMock.get.mockResolvedValueOnce({ data: students });
 
     render(<StudentList />);
 
-    // Wait for axios to resolve and update the component
-    const students = await screen.findAllByText(/John Doe/);
-    expect(students).toHaveLength(1);
+    // Wait for the students to be fetched and displayed
+    await waitFor(() => {
+      students.forEach((student) => {
+        const studentName = screen.getByText(
+          `${student.firstName} ${student.lastName}`
+        );
+        expect(studentName).toBeInTheDocument();
+
+        const studentDetails = screen.getByText(
+          `Email: ${student.email}, Phone: ${student.phoneNumber}, Educational Background: Institute: ${student.educationalBackground[0].institutionName}, Pass Out Year: ${student.educationalBackground[0].passOutYear}, CGPI: ${student.educationalBackground[0].cgpiScore}`
+        );
+        expect(studentDetails).toBeInTheDocument();
+      });
+    });
   });
 
-  test("renders message when no students registered", async () => {
-    axios.get.mockResolvedValueOnce({ data: [] });
+  it("renders a message when no students are available", async () => {
+    axiosMock.get.mockResolvedValueOnce({ data: [] });
 
     render(<StudentList />);
 
-    const noStudentMessage = await screen.findByText(
-      "No student Registered yet"
-    );
-    expect(noStudentMessage).toBeInTheDocument();
+    // Wait for the message to be rendered
+    await waitFor(() => {
+      const message = screen.getByText("No student Registered yet");
+      expect(message).toBeInTheDocument();
+    });
+  });
+
+  it("handles error when fetching students fails", async () => {
+    const errorMessage = "Failed to fetch students";
+    axiosMock.get.mockRejectedValueOnce({ message: errorMessage });
+
+    render(<StudentList />);
+
+    // Wait for the error message to be rendered
+    await waitFor(() => {
+      const error = screen.getByText(errorMessage);
+      expect(error).toBeInTheDocument();
+    });
   });
 });
