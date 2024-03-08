@@ -86,7 +86,7 @@ const Form = ({ setSubmitted, setIsError }) => {
             }}
           >
             <Scrollbars
-              style={{ height: 450 }}
+              style={{ height: 440 }}
               renderThumbVertical={({ style }) => (
                 <div style={{ ...style, backgroundColor: "transparent" }} />
               )}

@@ -47,7 +47,7 @@ const StudentList = () => {
         }}
       >
         <Scrollbars
-          style={{ height: 465 }}
+          style={{ height: 455 }}
           renderThumbVertical={({ style }) => (
             <div style={{ ...style, backgroundColor: "transparent" }} />
           )}
